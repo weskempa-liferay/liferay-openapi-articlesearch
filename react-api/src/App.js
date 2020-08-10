@@ -86,9 +86,7 @@ class App extends React.Component {
                     <Export articles={this.state.articles}/>
 
                   </div>
-
                 </div>
-
               </div>
 
               <div className="col-sm-8">
