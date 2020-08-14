@@ -3,7 +3,7 @@ import React from 'react'
 const Articles = ({ articles }) => {
   return (
     <div>
-       {articles.map(article => (
+       {articles.reverse().map(article => (
 
           <div className="card" key={article.key}>
             <div className="card-body">

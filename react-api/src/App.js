@@ -8,7 +8,6 @@ import './App.css';
 
 const username = 'test';
 const password = 'test';
-const siteId = '20123';
 
 class App extends React.Component {
   
@@ -19,7 +18,10 @@ class App extends React.Component {
       articles: [],
       statusMessage: '',
       firstLoad: true
-    };
+    }
+  }
+  componentDidMount() {
+    //handleSubmit("load");
   }
 
   render() {
@@ -50,13 +52,13 @@ class App extends React.Component {
                     <form onSubmit={this.handleSubmit}>
 
                       <div className="form-group">
-                         <label>Site Id:</label>  {siteId}
+                         <label>Site: SecureKey Portal</label>
                       </div>
 
                       <div className="form-group">
                         <label>Content Structure Type:</label>
                         <select className="form-control"  name="contentStuctureId">
-                          <option value="59781">Basic Content Structure (Local)</option>
+                          <option value="99155">Basic Website Content</option>
                         </select>
                       </div>
 
@@ -65,7 +67,7 @@ class App extends React.Component {
 
                         <select className="form-control" name="journalLanguageId">
                           <option value="en-US">en-US</option>
-                          <option value="fr-FR">fr-FR</option>
+                          <option value="fr-CA">fr-CA</option>
                         </select>
                       </div>
 
@@ -113,6 +115,14 @@ class App extends React.Component {
     );
   }
 
+  async loadSites(){
+    console.log("loading")
+  }
+
+  async loadStructures(){
+    
+  }
+
   async handleSubmit(event) {
 
     event.preventDefault();
@@ -123,23 +133,16 @@ class App extends React.Component {
        firstLoad: false
     });
     
-    let structureId = data.get('contentStuctureId');
-    let languageId = data.get('journalLanguageId');
+    let structureId = data.get('contentStuctureId')
 
-    let headers = new Headers({ 
-      'Accept': 'application/json',
-      'Authorization': 'Basic ' + base64.encode(username + ":" + password),
-      'Accept-Language': languageId
-    });
+    let headers = getHeaders(data)
 
-    let domain_url = "http://localhost:8080/";
+    let domain_url = ""
     let url =
       domain_url +
-      "/o/headless-delivery/v1.0/sites/" +
-      siteId +
-      "/structured-contents?filter=(contentStructureId eq " +
+      "/o/headless-delivery/v1.0/content-structures/" +
       structureId +
-      ") ";
+      "/structured-contents";
 
     var requestOptions = {
       method: "GET",
@@ -177,6 +180,20 @@ class App extends React.Component {
        var tmp = document.createElement("DIV");
        tmp.innerHTML = html;
        return tmp.textContent || tmp.innerText || "";
+    }
+
+    function getHeaders(data){
+
+      let languageId = data.get('journalLanguageId');
+
+      let headers = new Headers({ 
+        'Accept': 'application/json',
+        'Authorization': 'Basic ' + base64.encode(username + ":" + password),
+        'Accept-Language': languageId
+      });
+
+      return headers;
+
     }
 
   }
